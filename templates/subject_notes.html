@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container">
+
+    <h1>{{ subject }} Notes</h1>
+
+    <div class="notes-grid">
+
+        {% for note in notes %}
+
+        <div class="note-card">
+
+            <img src="https://picsum.photos/300/200?random={{ loop.index }}">
+
+            <div class="note-content">
+                <h3>{{ note.title }}</h3>
+                <p>{{ note.description }}</p>
+                <p>Uploaded by: {{ note.user.username }}</p>
+
+                <div class="actions">
+                <a href="{{ url_for('static', filename='uploads/' + note.filename) }}" target="_blank" class="btn small">
+                Open
+                </a>
+
+                &nbsp;&nbsp;
+
+                <a href="{{ url_for('static', filename='uploads/' + note.filename) }}" download class="btn small">
+                Download
+                </a>
+                </div>
+            </div>
+
+        </div>
+
+        {% else %}
+
+        <i><p>No notes yet 😕</p></i>
+        <a href="/upload" class="btn">Upload your first note</a>
+        {% endfor %}
+
+    </div>
+
+</div>
+
+{% endblock %}

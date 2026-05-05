@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block title %}Create Account | StudyStack{% endblock %}
+{% block content %}
+<section class="auth-container">
+
+    <div class="auth-card">
+
+        <h1>Create Account</h1>
+        <p class="subtitle">Join StudyStack and start sharing notes</p>
+
+        <!-- 🔴 ERROR / SUCCESS MESSAGES -->
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <div class="error-box">
+              {% for msg in messages %}
+                <p>{{ msg }}</p>
+              {% endfor %}
+            </div>
+          {% endif %}
+        {% endwith %}
+
+        <form method="POST" onsubmit="return validateForm()">
+
+            <div class="form-group">
+                <label>Username</label>
+                <input type="text" name="username" id="username" placeholder="Enter username" required>
+            </div>
+
+            <div class="form-group password-box">
+                <label>Password</label>
+                <input type="password" name="password" id="password" placeholder="Enter password" required>
+                <span onclick="togglePassword('password')" class="toggle-eye">👁️</span>
+            </div>
+
+            <div class="form-group password-box">
+                <label>Confirm Password</label>
+                <input type="password" id="confirmPassword" placeholder="Confirm password" required>
+                <span onclick="togglePassword('confirmPassword')" class="toggle-eye">👁️</span>
+            </div>
+
+            <button class="btn primary full">Create Account</button>
+
+        </form>
+
+        <p class="switch">
+            Already have an account?
+            <a href="/login">Login</a>
+        </p>
+
+    </div>
+
+</section>
+
+<!-- 👁️ Toggle Password -->
+<script>
+function togglePassword(id) {
+    let field = document.getElementById(id);
+    field.type = field.type === "password" ? "text" : "password";
+}
+
+// ✅ Confirm password validation
+function validateForm() {
+    let pass = document.getElementById("password").value;
+    let confirm = document.getElementById("confirmPassword").value;
+
+    if (pass !== confirm) {
+        alert("Passwords do not match!");
+        return false;
+    }
+    return true;
+}
+</script>
+
+{% endblock %}

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <!-- 🔥 DYNAMIC TITLE FIX -->
+    <title>{% block title %}StudyStack{% endblock %}</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+    <div class="navbar">
+        <div class="logo">StudyStack</div>
+
+        <div>
+            <a href="/dashboard">Home</a>
+            <a href="/browse">Explore</a>
+            <a href="/upload">Upload</a>
+            <a href="/mynotes">My Library</a>
+
+            {% if current_user.is_authenticated %}
+                <a href="/logout" class="btn danger">Logout</a>
+            {% endif %}
+        </div>
+    </div>
+
+    {% block content %}{% endblock %}
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</body>
+</html>

@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}Explore | StudyStack{% endblock %}
+{% block content %}
+
+<div class="browse-container">
+
+    <h1 class="page-title">Explore Subjects</h1>
+
+    <div class="notes-grid">
+
+        {% set subjects = [
+            ("Mathematics", 1),
+            ("Physics", 2),
+            ("Chemistry", 3),
+            ("Biology", 4),
+            ("History", 5),
+            ("Geography", 6),
+            ("Literature", 7),
+            ("Computer Science", 8),
+            ("Economics", 9),
+            ("Psychology", 10),
+            ("Philosophy", 11),
+            ("Engineering", 12)
+        ] %}
+
+        {% for subject, i in subjects %}
+        <div class="note-card">
+
+            <!-- RANDOM FAST IMAGE -->
+            <img 
+                src="https://picsum.photos/400/250?random={{ i }}" 
+                loading="lazy"
+                alt=""
+            >
+
+            <div class="note-content">
+                <h3>{{ subject }}</h3>
+
+                <a href="/subject/{{ subject }}" class="btn-download">
+                    View Notes
+                </a>
+            </div>
+
+        </div>
+        {% endfor %}
+
+    </div>
+
+</div>
+
+{% endblock %}

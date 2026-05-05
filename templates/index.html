@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudyStack</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <!-- ✅ CSS LINK (IMPORTANT) -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<!-- ================= NAVBAR ================= -->
+<header class="navbar">
+    <h2 class="logo">StudyStack</h2>
+    <nav>
+        <a href="/">Home</a>
+        <a href="/browse">Browse</a>
+        <a href="/dashboard">Dashboard</a>
+        <a href="/upload">Upload</a>
+    </nav>
+</header>
+
+<!-- ================= HERO ================= -->
+<section class="hero">
+    <div class="hero-content">
+        <h1>A smarter way to <span>study together</span></h1>
+        <p>
+            StudyStack is a Student Notes Sharing Website where students can upload,
+            discover, and download study notes in PDF format — all organized by subject.
+        </p>
+
+        <div>
+            <a href="/browse" class="btn primary">Browse Notes</a>
+            <a href="/upload" class="btn secondary">Upload Notes</a>
+        </div>
+    </div>
+</section>
+
+<!-- ================= FEATURES ================= -->
+<section class="features">
+
+    <div class="card">
+        <img src="https://cdn-icons-png.flaticon.com/512/3135/3135755.png" class="icon">
+        <h3>Organized Notes</h3>
+        <p>Find notes easily sorted by subjects like Math, Physics, and more.</p>
+    </div>
+
+    <div class="card">
+        <img src="https://cdn-icons-png.flaticon.com/512/1828/1828919.png" class="icon">
+        <h3>Upload & Share</h3>
+        <p>Upload your notes and help others learn better and faster.</p>
+    </div>
+
+    <div class="card">
+        <img src="https://cdn-icons-png.flaticon.com/512/190/190411.png" class="icon">
+        <h3>Download Instantly</h3>
+        <p>Download study materials in one click and prepare for exams easily.</p>
+    </div>
+
+</section>
+
+<!-- ================= CTA ================= -->
+<section class="cta">
+    <h2>Start sharing your notes today 🚀</h2>
+    <p>Help others while improving your own learning.</p>
+    <a href="/upload" class="btn primary">Get Started</a>
+</section>
+
+<!-- ================= JS LINK ================= -->
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+</body>
+</html>

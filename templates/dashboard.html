@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+{% block title %}Dashboard | StudyStack{% endblock %}
+{% block content %}
+
+<div class="container">
+
+<h1>Dashboard</h1>
+<i><h2><p  class="subtitle">Welcome back, {{ current_user.username }}👋</p></i></h2>    
+
+<div class="dashboard-grid">
+
+    <!-- LEFT SIDE -->
+    <div class="welcome-card">
+        <p><i>Manage your notes and track your progress</p></i>
+
+        <button onclick="toggleCharts()" class="btn primary">
+            Show / Hide Analytics
+        </button>
+    </div>
+
+    <!-- RIGHT SIDE (CHARTS) -->
+    <div id="chartsSection">
+
+        <div class="chart-card">
+            <h3>Notes by Subject</h3>
+            <canvas id="subjectChart"></canvas>
+        </div>
+
+        <div class="chart-card">
+            <h3>Uploads Trend</h3>
+            <canvas id="uploadChart"></canvas>
+        </div>
+
+    </div>
+
+</div>
+
+<!-- 🔥 RECENT NOTES -->
+<div class="box">
+    <div class="top-bar">
+        <h3>Recent Notes</h3>
+        <a href="/upload" class="btn primary">+ Upload</a>
+    </div>
+
+    {% if notes %}
+        <ul class="recent-list">
+            {% for note in notes %}
+            <li>
+                📄 <b>{{ note.title }}</b> - {{ note.subject }}
+            </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="empty">No notes yet</p>
+    {% endif %}
+</div>
+
+<!-- ACTIVITY -->
+<div class="box">
+    <h3>Activity</h3>
+    {% if notes %}
+        <ul class="recent-list">
+            {% for note in notes %}
+            <li>
+                ✅ Uploaded "{{ note.title }}"
+            </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="empty">No activity</p>
+    {% endif %}
+</div>
+
+</div>
+
+<!-- ✅ CHART LIB -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<!-- ✅ FLASK DATA PASS -->
+<script>
+    const chartLabels = JSON.parse('{{ labels | tojson }}');
+    const chartData = JSON.parse('{{ values | tojson }}');
+
+    const ctx2 = document.getElementById('uploadChart').getContext('2d');
+
+    new Chart(ctx2, {
+        type: 'line',
+        data: {
+            labels: chartLabels,
+            datasets: [{
+                label: 'Uploads',
+                data: chartData,
+                tension: 0.4
+            }]
+        }
+    });
+</script>
+
+<!-- ✅ YOUR JS FILE -->
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+{% endblock %}

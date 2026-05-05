@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}My Library | StudyVerse{% endblock %}
+{% block content %}
+
+<section class="container">
+
+    <div class="top-bar">
+        <div>
+            <h1>My Notes</h1>
+            <p>Manage your uploaded notes</p>
+        </div>
+
+        <a href="/upload" class="btn primary">+ Upload</a>
+    </div>
+
+    {% if notes %}
+    <div class="notes-grid">
+
+        {% for note in notes %}
+        <div class="note-card">
+            <h3>{{ note.title }}</h3>
+            <p><b>{{ note.subject }}</b></p>
+            <p>{{ note.description }}</p>
+
+            <div class="actions">
+                <a href="{{ url_for('static', filename='uploads/' + note.filename) }}" target="_blank" class="btn small">
+                Open
+                </a>
+                &nbsp;&nbsp;
+                <a href="{{ url_for('static', filename='uploads/' + note.filename) }}">
+                    Download
+                </a>
+
+                <a href="/delete/{{ note.id }}" class="btn small danger">
+                    Delete
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+
+    </div>
+
+    {% else %}
+    <div class="empty-box">
+        <h2>No Notes Yet 📂</h2>
+        <a href="/upload" class="btn primary">Upload Now</a>
+    </div>
+    {% endif %}
+
+</section>
+
+{% endblock %}

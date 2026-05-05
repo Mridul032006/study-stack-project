@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}Sign In | StudyStack{% endblock %}
+
+{% block content %}
+
+<div class="auth-bg dark">
+
+    <div class="auth-card dark-card">
+
+        <h1>Welcome Back 👋</h1>
+        <p>Login to continue</p>
+
+        <!-- 🔴 ERROR MESSAGES -->
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <div class="error-box">
+              {% for msg in messages %}
+                <p>{{ msg }}</p>
+              {% endfor %}
+            </div>
+          {% endif %}
+        {% endwith %}
+
+        <form method="POST">
+
+            <div class="form-group">
+                <input type="text" name="username" placeholder="Username" required>
+            </div>
+
+            <div class="form-group password-box">
+                <input type="password" name="password" id="password" placeholder="Password" required>
+                <span onclick="togglePassword()" class="toggle-eye">👁️</span>
+            </div>
+
+            <button class="btn full primary">Login</button>
+
+        </form>
+
+        <div class="auth-footer">
+            <p>Don't have an account? <a href="/register">Sign up</a></p>
+        </div>
+
+    </div>
+
+</div>
+
+<!-- 👁️ Toggle Password Script -->
+<script>
+function togglePassword() {
+    let pass = document.getElementById("password");
+    pass.type = pass.type === "password" ? "text" : "password";
+}
+</script>
+
+{% endblock %}
