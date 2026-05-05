@@ -22,14 +22,15 @@
           {% endif %}
         {% endwith %}
 
-        <form method="POST">
+        <!-- ✅ AUTOCOMPLETE OFF -->
+        <form method="POST" autocomplete="off">
 
             <div class="form-group">
-                <input type="text" name="username" placeholder="Username" required>
+                <input type="text" name="username" placeholder="Username" required autocomplete="off">
             </div>
 
             <div class="form-group password-box">
-                <input type="password" name="password" id="password" placeholder="Password" required>
+                <input type="password" name="password" id="password" placeholder="Password" required autocomplete="new-password">
                 <span onclick="togglePassword()" class="toggle-eye">👁️</span>
             </div>
 
