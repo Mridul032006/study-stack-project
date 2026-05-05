@@ -4,14 +4,17 @@ from flask_login import LoginManager, UserMixin, login_user, login_required, log
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 from collections import Counter
+from werkzeug.utils import secure_filename
 import os
 
 app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY", "fallback-key")
 
-# ✅ DATABASE FIXED PATH
+# ================= CONFIG =================
 basedir = os.path.abspath(os.path.dirname(__file__))
+
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'database.db')
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['UPLOAD_FOLDER'] = os.path.join(basedir, 'static/uploads')
 
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
@@ -27,15 +30,15 @@ login_manager.login_view = "login"
 # ================= MODELS =================
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(100), unique=True)
-    password = db.Column(db.String(200))  # hashed password
+    username = db.Column(db.String(100), unique=True, nullable=False)
+    password = db.Column(db.String(200), nullable=False)
 
 
 class Note(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(200))
+    title = db.Column(db.String(200), nullable=False)
     description = db.Column(db.Text)
-    subject = db.Column(db.String(100))
+    subject = db.Column(db.String(100), nullable=False)
     filename = db.Column(db.String(200))
 
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
@@ -63,8 +66,8 @@ def register():
         return redirect(url_for('dashboard'))
 
     if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
+        username = request.form.get('username')
+        password = request.form.get('password')
 
         if not username or not password:
             flash("All fields are required")
@@ -93,8 +96,8 @@ def login():
         return redirect(url_for('dashboard'))
 
     if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
+        username = request.form.get('username')
+        password = request.form.get('password')
 
         if not username or not password:
             flash("All fields are required")
@@ -159,17 +162,17 @@ def browse():
 @login_required
 def upload():
     if request.method == "POST":
-        title = request.form['title']
-        description = request.form['description']
-        subject = request.form['subject']
-        file = request.files['file']
+        title = request.form.get('title')
+        description = request.form.get('description')
+        subject = request.form.get('subject')
+        file = request.files.get('file')
 
         if not title or not subject:
             flash("Title and subject are required")
             return redirect('/upload')
 
-        if file:
-            filename = file.filename
+        if file and file.filename != "":
+            filename = secure_filename(file.filename)
             filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
             file.save(filepath)
 
@@ -185,6 +188,9 @@ def upload():
             db.session.commit()
 
             return redirect(url_for('dashboard'))
+
+        flash("File upload failed")
+        return redirect('/upload')
 
     return render_template("upload.html")
 
@@ -236,8 +242,6 @@ def download_file(filename):
     )
 
 
-# ================= RUN =================
-if __name__ == '__main__':
-    with app.app_context():
-        db.create_all()
-    app.run(debug=True)
+# ================= INIT DB =================
+with app.app_context():
+    db.create_all()
